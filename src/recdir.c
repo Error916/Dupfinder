@@ -26,28 +26,30 @@ char* join_path(const char *base, const char *file){
 
 int recdir_push(RECDIR *recdir, char *path){
 	assert(recdir->stack_size < RECDIR_STACK_CAP);
-	RECDIR_Frame *top = &recdir->stack[recdir->stack_size];
+	recdir->stack_size += 1;
+	RECDIR_Frame *top = recdir_top(recdir);
 	top->path = path;
 	top->dir = opendir(top->path);
 	if(top->dir == NULL){
-		free(top->path);
+		recdir_pop(recdir);
 		return -1;
 	}
-	recdir->stack_size++;
 	return 0;
 }
 
 void recdir_pop(RECDIR *recdir){
 	assert(recdir->stack_size > 0);
 	RECDIR_Frame *top = &recdir->stack[--recdir->stack_size];
-	int ret = closedir(top->dir);
-	assert(ret == 0);
+	if(top->dir != NULL){
+		int ret = closedir(top->dir);
+		assert(ret == 0);
+	}
 	free(top->path);
 }
 
-char *recdir_path(RECDIR *recdir){
+RECDIR_Frame *recdir_top(RECDIR *recdir){
 	assert(recdir->stack_size > 0);
-	return recdir->stack[recdir->stack_size - 1].path;
+	return &recdir->stack[recdir->stack_size - 1];
 }
 
 RECDIR *recdir_open(const char *dir_path){
