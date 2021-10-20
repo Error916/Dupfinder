@@ -6,8 +6,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-typedef struct ht ht;
 typedef struct ht_entry ht_entry;
+typedef struct ht ht;
 
 ht* ht_create(void);
 void ht_destroy(ht* table);
@@ -20,6 +20,7 @@ size_t ht_length(ht* table);
 typedef struct {
     const char* key;
     void* value;
+    ht_entry* next;
 
     ht* _table;
     size_t _index;

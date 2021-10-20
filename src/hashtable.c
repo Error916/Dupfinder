@@ -13,6 +13,7 @@ struct ht {
 	size_t length;
 };
 
+
 #define INITIAL_CAPACITY 16
 
 ht* ht_create(void){
@@ -87,11 +88,12 @@ static const char* ht_set_entry(ht_entry* entries, size_t capacity, const char* 
 
 	while(entries[index].key != NULL){
 		if(strcmp(key, entries[index].key) == 0){ //if value exit append to is tail
-            		ht_entry *ent = malloc(sizeof(ht_entry));
-			ent->key = (char*)key;
-			ent->value = value;
-			ent->next = &entries[index];
-			entries[index] = *ent;
+			// TODO: append elements in the correct way
+            		/* ht_entry *ent = malloc(sizeof(ht_entry)); */
+			/* ent->key = (char*)key; */
+			/* ent->value = value; */
+			/* ent->next = &entries[index]; */
+			/* entries[index] = *ent; */
             		return entries[index].key;
         	}
 
@@ -171,6 +173,7 @@ int ht_next(hti* it){
             		ht_entry entry = table->entries[i];
             		it->key = entry.key;
             		it->value = entry.value;
+			it->next = entry.next;
             		return 1;
         	}
     	}

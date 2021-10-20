@@ -52,13 +52,18 @@ void hash_of_file(const char *file_path, BYTE hash[32]){
 	sha256_final(&ctx, hash);
 }
 
-// TODO: build the hash table 2:13:39
+// TODO: Fix hash table
 int main(int argc, char **argv){
 
 	(void) argc;
 	(void) argv;
 
 	RECDIR *recdir = recdir_open(".");
+	ht* hashtable = ht_create();
+	if(hashtable == NULL){
+		fprintf(stderr, "ERROR: out of memory");
+		exit(1);
+	}
 
 	errno = 0;
 	struct dirent *ent = recdir_read(recdir);
@@ -68,8 +73,10 @@ int main(int argc, char **argv){
 		char *path = join_path( recdir_top(recdir)->path, ent->d_name);
 		hash_of_file(path, hash);
 		hash_as_cstr(hash, hash_cstr);
-		printf("%s %s\n", hash_cstr, path);
-		free(path);
+		if(ht_set(hashtable, hash_cstr, path) == NULL){
+			fprintf(stderr, "ERROR: out of memory");
+			exit(1);
+		}
 		ent = recdir_read(recdir);
 	}
 
@@ -79,6 +86,14 @@ int main(int argc, char **argv){
 	}
 
 	recdir_close(recdir);
+
+	hti it = ht_iterator(hashtable);
+	while(ht_next(&it)){
+		printf("%s %s\n", it.key, (char*)it.value);
+		free(it.value);
+	}
+
+	ht_destroy(hashtable);
 
 	return 0;
 }
