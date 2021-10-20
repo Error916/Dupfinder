@@ -6,11 +6,12 @@
 
 #include "recdir.h"
 #include "sha256.h"
+#include "hashtable.h"
 
 char hex_digit(unsigned int digit){
 	digit = digit % 0x10;
 	if(digit <= 9) return digit + '0';
-	if(10 <= digit && digit <= 15) return digit - 10 + 'a';
+	if(10 <= digit && digit <= 15) return digit - 10 + 'A';
 	assert(0 && "unrechable");
 }
 
