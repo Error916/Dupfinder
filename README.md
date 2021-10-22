@@ -6,7 +6,7 @@ A program to find duplicate files writen in c
 
 ```console
 $ make
-$ ./dupfinder
+$ ./dupfinder [path]
 ```
 
 ## References
