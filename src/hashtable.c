@@ -39,6 +39,7 @@ void ht_destroy(ht* table){
 		if(table->entries[i].key != NULL){
 			free((void*)table->entries[i].key);
 			ht_entry *ent = table->entries[i].next;
+			// TODO: Free correctly all the member of the linked list
 			while(ent != NULL){
 				ht_entry *old = ent;
 				ent = ent->next;
