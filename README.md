@@ -1,11 +1,13 @@
 # DUPLICATE FINDER
 
+A program to find duplicate files writen in c
+
 ## Quick Start
 
-'''console
+```console
 $ make
 $ ./dupfinder
-'''
+```
 
 ## References
 
