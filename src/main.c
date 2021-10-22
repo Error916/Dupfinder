@@ -58,13 +58,18 @@ struct ht_entry {
 	ht_entry* next;
 };
 
-// TODO: Fix appending to ht_entry in ht_set
+// TODO: Fix list of appending elements
 int main(int argc, char **argv){
 
-	(void) argc;
-	(void) argv;
+	char* pathexe;
+	if(argc == 2){
+		pathexe = argv[1];
+	} else {
+		fprintf(stderr, "ERROR: use %s [path]\n", argv[0]);
+		exit(1);
+	}
 
-	RECDIR *recdir = recdir_open(".");
+	RECDIR *recdir = recdir_open(pathexe);
 	ht* hashtable = ht_create();
 	if(hashtable == NULL){
 		fprintf(stderr, "ERROR: out of memory");

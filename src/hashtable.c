@@ -95,8 +95,6 @@ static const char* ht_set_entry(ht_entry* entries, size_t capacity, const char* 
 			ent->value = value;
 			ent->next = entries[index].next;
 			entries[index].next = ent;
-			/* ent->next = &entries[index]; */
-			/* entries[index] = *ent; */
             		return entries[index].key;
         	}
 
