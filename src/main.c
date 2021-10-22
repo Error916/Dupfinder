@@ -52,7 +52,13 @@ void hash_of_file(const char *file_path, BYTE hash[32]){
 	sha256_final(&ctx, hash);
 }
 
-// TODO: Fix hash table
+struct ht_entry {
+	char* key;
+	void* value;
+	ht_entry* next;
+};
+
+// TODO: Fix appending to ht_entry in ht_set
 int main(int argc, char **argv){
 
 	(void) argc;
@@ -89,7 +95,13 @@ int main(int argc, char **argv){
 
 	hti it = ht_iterator(hashtable);
 	while(ht_next(&it)){
-		printf("%s %s\n", it.key, (char*)it.value);
+		printf("%s %s ", it.key, (char*)it.value);
+		ht_entry *ent = it.next;
+		while(ent != NULL){
+			printf("%s ", (char*)ent->value);
+			ent = ent->next;
+		}
+		printf("\n");
 		free(it.value);
 	}
 

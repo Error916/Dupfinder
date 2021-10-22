@@ -40,8 +40,9 @@ void ht_destroy(ht* table){
 			free((void*)table->entries[i].key);
 			ht_entry *ent = table->entries[i].next;
 			while(ent != NULL){
-				free((void*)ent->key);
+				ht_entry *old = ent;
 				ent = ent->next;
+				free(old);
 			}
 			free(ent);
 		}
@@ -88,10 +89,12 @@ static const char* ht_set_entry(ht_entry* entries, size_t capacity, const char* 
 
 	while(entries[index].key != NULL){
 		if(strcmp(key, entries[index].key) == 0){ //if value exit append to is tail
-			// TODO: append elements in the correct way
-            		/* ht_entry *ent = malloc(sizeof(ht_entry)); */
-			/* ent->key = (char*)key; */
-			/* ent->value = value; */
+			// TODO: Fix error in the linking now strange max depth beaviour
+            		ht_entry *ent = malloc(sizeof(ht_entry));
+			ent->key = (char*)key;
+			ent->value = value;
+			ent->next = entries[index].next;
+			entries[index].next = ent;
 			/* ent->next = &entries[index]; */
 			/* entries[index] = *ent; */
             		return entries[index].key;
@@ -110,6 +113,7 @@ static const char* ht_set_entry(ht_entry* entries, size_t capacity, const char* 
         	}
         	(*plength)++;
     	}
+
 	entries[index].key = (char*)key;
     	entries[index].value = value;
     	entries[index].next = NULL;
@@ -129,8 +133,7 @@ static int ht_expand(ht* table){
     	for(size_t i = 0; i < table->capacity; i++){
         	ht_entry entry = table->entries[i];
         	if(entry.key != NULL) {
-        		ht_set_entry(new_entries, new_capacity, entry.key,
-                        entry.value, NULL);
+        		ht_set_entry(new_entries, new_capacity, entry.key, entry.value, NULL);
         	}
     	}
 
