@@ -35,6 +35,7 @@ void hash_of_file(const char *file_path, BYTE hash[32]){
 		exit(1);
 	}
 
+	// TODO: maybe use bigger chunck of memory for improve speed
 	BYTE buffer[1024];
 	size_t buffer_size = fread(buffer, 1, sizeof(buffer), f);
 	while(buffer_size > 0){
@@ -100,13 +101,13 @@ int main(int argc, char **argv){
 
 	hti it = ht_iterator(hashtable);
 	while(ht_next(&it)){
-		printf("%s %s ", it.key, (char*)it.value);
+		if(it.next == NULL) continue;
+		printf("%s\n\t%s\n", it.key, (char*)it.value);
 		ht_entry *ent = it.next;
 		while(ent != NULL){
-			printf("%s ", (char*)ent->value);
+			printf("\t%s\n", (char*)ent->value);
 			ent = ent->next;
 		}
-		printf("\n");
 		free(it.value);
 	}
 
