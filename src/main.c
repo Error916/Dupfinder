@@ -40,6 +40,7 @@ void hash_of_file(const char *file_path, BYTE hash[32]){
 	size_t buffer_size = fread(buffer, 1, sizeof(buffer), f);
 	while(buffer_size > 0){
 		sha256_update(&ctx, buffer, buffer_size);
+		// TODO: sizeof and 1 should be inverded but if i invert them i check less files need to look why probably related the output problem
 		buffer_size = fread(buffer, sizeof(buffer), 1, f);
 	}
 

@@ -68,7 +68,7 @@ RECDIR *recdir_open(const char *dir_path){
 
 struct dirent *recdir_read(RECDIR *recdirp){
 	while(recdirp->stack_size > 0){
-		RECDIR_Frame *top = &recdirp->stack[recdirp->stack_size - 1];
+		RECDIR_Frame *top = recdir_top(recdirp);
 		struct dirent *ent = readdir(top->dir);
 		if(ent) {
 			if(ent->d_type == DT_DIR){
