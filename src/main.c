@@ -41,7 +41,7 @@ void hash_of_file(const char *file_path, BYTE hash[32]){
 	while(buffer_size > 0){
 		sha256_update(&ctx, buffer, buffer_size);
 		// TODO: sizeof and 1 should be inverded but if i invert them i check less files need to look why probably related the output problem
-		buffer_size = fread(buffer, sizeof(buffer), 1, f);
+		buffer_size = fread(buffer, 1, sizeof(buffer), f);
 	}
 
 	if(ferror(f)){
@@ -83,7 +83,7 @@ int main(int argc, char **argv){
 	while(ent){
 		BYTE hash[32];
 		char hash_cstr[32*2 + 1];
-		char *path = join_path( recdir_top(recdir)->path, ent->d_name);
+		char *path = join_path(recdir_top(recdir)->path, ent->d_name);
 		hash_of_file(path, hash);
 		hash_as_cstr(hash, hash_cstr);
 		if(ht_set(hashtable, hash_cstr, path) == NULL){
@@ -107,6 +107,7 @@ int main(int argc, char **argv){
 		ht_entry *ent = it.next;
 		while(ent != NULL){
 			printf("\t%s\n", (char*)ent->value);
+			free(ent->value);
 			ent = ent->next;
 		}
 		free(it.value);
