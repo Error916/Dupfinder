@@ -45,7 +45,6 @@ void ht_destroy(ht* table){
 				ent = ent->next;
 				free(old);
 			}
-			free(ent);
 		}
 	}
 
