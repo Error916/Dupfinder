@@ -1,3 +1,4 @@
+#define _DEFAULT_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -68,6 +69,10 @@ int main(int argc, char **argv){
 	} else {
 		fprintf(stderr, "ERROR: use %s [path]\n", argv[0]);
 		exit(1);
+	}
+
+	if (setvbuf(stdout, NULL, _IOFBF, 0)) {
+        	fprintf(stderr, "Error: %s\n", strerror(errno));
 	}
 
 	RECDIR *recdir = recdir_open(pathexe);
