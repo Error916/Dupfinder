@@ -1,4 +1,3 @@
-#define _DEFAULT_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -60,7 +59,6 @@ struct ht_entry {
 	ht_entry* next;
 };
 
-// TODO: Fix list of appending elements
 int main(int argc, char **argv){
 
 	char* pathexe;
